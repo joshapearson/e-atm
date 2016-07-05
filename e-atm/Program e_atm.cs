@@ -51,7 +51,12 @@ namespace e_atm
 						Console.WriteLine("2. Withdraw Cash\n");
 						Console.WriteLine("3. Make a Deposit\n");
 						Console.WriteLine("4. Exit\n");
-						menuChoice = int.Parse(Console.ReadLine());
+						bool validInput = int.TryParse(Console.ReadLine(), out menuChoice);
+						if (!validInput)
+						{
+							Console.WriteLine("Invalid input.");
+							continue;
+						}
 
 						switch (menuChoice)
 						{
@@ -66,32 +71,28 @@ namespace e_atm
 								{
 									Console.WriteLine("\n amount exceeds withdrawl limit");
 								}
+								else if(account.amount < withdraw)
+								{
+									Console.WriteLine("Available amount exceeded");
+								}
 								else
 								{
 									
 									if(account.UsedAllWithdrawals())
 									{
-										Console.WriteLine("total withdrawals reached");	
-
+										Console.WriteLine("total withdrawals reached");
+										break;
 									}
 									else
 									{
 										account.withdrawalNumber--;
-										Console.WriteLine("You have {0} withdrawals left", account.withdrawalNumber );
-									
+										Console.WriteLine("You have {0} withdrawals left", account.withdrawalNumber );									
 									}
 									
 									amount = amount - withdraw;
 									Console.WriteLine("\n\n Please take your cash");
 									Console.WriteLine("\n YOUR CURRENT BALANCE IS {0}", amount);
-									account.amount = amount;
-									for (int i = 0; i < 10; i++)
-									{
-										if (i <= 10)
-											continue;
-										if (1 > 10)
-											break;
-									}
+									account.amount = amount;																		
 								}
 								break;
 							case 3:
